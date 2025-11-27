@@ -2,6 +2,7 @@ package com.example.pertemuan9.room
 
 import android.content.Context
 import androidx.room.Database
+import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
@@ -9,11 +10,19 @@ import androidx.room.RoomDatabase
 abstract class DatabaseSiswa : RoomDatabase() {
     abstract fun siswaDao(): SiswaDao
 
-    companion object{
+    companion object {
         @Volatile
-        private var INSTANCE: DatabaseSiswa? = null
+        private var Instance: DatabaseSiswa? = null
         fun getDatabase(context: Context): DatabaseSiswa {
             return (Instance ?: synchronized(this) {
-)
+                Room.databaseBuilder(
+                    context, klass = DatabaseSiswa::class.java,
+                    "siswa_database"
+                )
+                    .build().also { Instance = it }
+
+            })
+
+        }
     }
 }
