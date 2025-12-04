@@ -9,6 +9,8 @@ import com.example.pertemuan9.repositori.AplikasiSiswa
 import com.example.pertemuan9.viewmodel.DetailViewModel
 import com.example.pertemuan9.viewmodel.EntryViewModel
 import com.example.pertemuan9.viewmodel.HomeViewModel
+import com.example.pertemuan9.viewmodel.EditViewModel
+
 
 
 
@@ -26,6 +28,9 @@ object PenyediaViewModel{
                 this.createSavedStateHandle(),
                 aplikasiSiswa().container.repositoriSiswa
             )
+        }
+        initializer {
+            EditViewModel(this.createSavedStateHandle(), aplikasiSiswa().container.repositoriSiswa)
         }
     }
 }
