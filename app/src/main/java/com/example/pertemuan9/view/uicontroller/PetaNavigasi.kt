@@ -13,41 +13,50 @@ import com.example.myroomsiswa.view.DetailSiswaScreen
 import com.example.pertemuan9.view.EntrySiswaScreen
 import com.example.pertemuan9.view.HomeScreen
 import com.example.pertemuan9.view.route.DestinasiDetailSiswa
+import com.example.pertemuan9.view.route.DestinasiDetailSiswa.itemIdArg
 import com.example.pertemuan9.view.route.DestinasiHome
 import com.example.pertemuan9.view.route.DestinasiEntry
 
 
+// Perbaikan 1: Hapus tanda @ yang dobel
 @Composable
-fun Siswa_App(
+fun SiswaApp(
     navController: NavHostController = rememberNavController(),
+    modifier: Modifier = Modifier // Perbaikan 2: Tambahkan default value = Modifier
+) {
+    HostNavigasi(
+        navController = navController,
+        modifier = modifier // Teruskan modifier ke fungsi di bawahnya
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HostNavigasi(
+    navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
     NavHost(
         navController = navController,
         startDestination = DestinasiHome.route,
-        modifier = modifier
+        modifier = modifier // Perbaikan 3: Gunakan huruf kecil (parameter), JANGAN Modifier (object)
     ) {
-        // Halaman Home
-        composable(route = DestinasiHome.route) {
+        composable(DestinasiHome.route) {
             HomeScreen(
                 navigateToItemEntry = { navController.navigate(DestinasiEntry.route) },
-                // Tambahkan koma di atas ^
-                navigateToItemUpdate = {
+                navigateToItemUpdate = { // Perbaikan typo kecil: navigateToitemUpdate -> navigateToItemUpdate (camelCase)
                     navController.navigate("${DestinasiDetailSiswa.route}/$it")
                 }
             )
         }
-
-        // Halaman Entry
-        composable(route = DestinasiEntry.route) {
+        composable(DestinasiEntry.route) {
             EntrySiswaScreen(navigateBack = { navController.popBackStack() })
         }
-
-        // Halaman Detail
         composable(
             route = DestinasiDetailSiswa.routeWithArgs,
             arguments = listOf(
-                navArgument(DestinasiDetailSiswa.itemIdArg) { // Hapus titik (.) sebelum navArgument
+                // Perbaikan 4: Pastikan referensi itemIdArg lengkap
+                navArgument(DestinasiDetailSiswa.itemIdArg) {
                     type = NavType.IntType
                 }
             )
@@ -56,34 +65,5 @@ fun Siswa_App(
                 navigateBack = { navController.navigateUp() }
             )
         }
-        composable(route=DestinasiEditSiswa.routeWithArgs, arguments = listOf(
-            navArgument(DestinasiEditSiswa.itemIdArg){
-                type = NavType.IntType
-            }
-        )){
-            EntrySiswaScreen(
-                navigateBack = { navController.popBackStack()},
-                onNavigateUp = { navController.navigateUp() })
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun HostNavigasi(
-    navController: NavHostController,
-    modifier: Modifier = Modifier
-){
-    NavHost(navController=navController, startDestination = DestinasiHome.route, modifier = Modifier)
-    {
-        composable(DestinasiHome.route){
-            HomeScreen(
-                navigateToItemEntry = {navController.navigate(DestinasiEntry.route)},
-            )
-        }
-        composable(DestinasiEntry.route){
-            EntrySiswaScreen(navigateBack = { navController.popBackStack()})
-        }
-
     }
 }
