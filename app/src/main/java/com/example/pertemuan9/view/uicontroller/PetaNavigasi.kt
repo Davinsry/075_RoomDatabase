@@ -56,6 +56,15 @@ fun Siswa_App(
                 navigateBack = { navController.navigateUp() }
             )
         }
+        composable(route=DestinasiEditSiswa.routeWithArgs, arguments = listOf(
+            navArgument(DestinasiEditSiswa.itemIdArg){
+                type = NavType.IntType
+            }
+        )){
+            EntrySiswaScreen(
+                navigateBack = { navController.popBackStack()},
+                onNavigateUp = { navController.navigateUp() })
+        }
     }
 }
 
