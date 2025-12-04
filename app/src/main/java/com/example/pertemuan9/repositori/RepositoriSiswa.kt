@@ -4,16 +4,14 @@ import com.example.pertemuan9.room.Siswa
 import com.example.pertemuan9.room.SiswaDao
 import kotlinx.coroutines.flow.Flow
 
-interface RepositoriSiswa{
+interface RepositoriSiswa {
     fun getAllSiswaStream(): Flow<List<Siswa>>
-
     fun getSiswaStream(id: Int): Flow<Siswa?>
-
     suspend fun deleteSiswa(siswa: Siswa)
-
-
     suspend fun insertSiswa(siswa: Siswa)
 
+    // TAMBAHKAN BARIS INI:
+    suspend fun updateSiswa(siswa: Siswa)
 }
 
 class OfflineRepositoriSiswa(
