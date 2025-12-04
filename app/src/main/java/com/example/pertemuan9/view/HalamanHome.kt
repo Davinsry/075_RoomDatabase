@@ -1,5 +1,6 @@
 package com.example.pertemuan9.view
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -109,19 +110,20 @@ fun BodyHome(
 
 @Composable
 fun ListSiswa(
-    itemSiswa : List<Siswa>,
+    itemSiswa: List<Siswa>,
     onSiswaClick: (Siswa) -> Unit,
-    modifier: Modifier=Modifier
-){
-    LazyColumn(modifier = Modifier){
-        items(items = itemSiswa, key = {it.id}){
-                person ->  DataSiswa(
-            siswa = person,
-            modifier = Modifier
-                .padding(dimensionResource(id = R.dimen.padding_small)))
-                .clickable { onSiswaClick(person) })
-
-
+    modifier: Modifier = Modifier
+) {
+    // 1. Gunakan parameter 'modifier' yang dikirim dari luar, jangan hardcode Modifier
+    LazyColumn(modifier = modifier) {
+        items(items = itemSiswa, key = { it.id }) { person ->
+            DataSiswa(
+                siswa = person,
+                modifier = Modifier
+                    .padding(dimensionResource(id = R.dimen.padding_small))
+                    // 2. Masukkan .clickable DI DALAM chain modifier ini
+                    .clickable { onSiswaClick(person) }
+            )
         }
     }
 }
