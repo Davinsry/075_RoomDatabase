@@ -9,13 +9,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.myroomsiswa.view.DetailSiswaScreen
 import com.example.pertemuan9.view.EntrySiswaScreen
 import com.example.pertemuan9.view.HomeScreen
 import com.example.pertemuan9.view.route.DestinasiDetailSiswa
-import com.example.pertemuan9.view.route.DestinasiDetailSiswa.itemIdArg
 import com.example.pertemuan9.view.route.DestinasiHome
 import com.example.pertemuan9.view.route.DestinasiEntry
+import com.example.pertemuan9.view.DetailSiswaScreen
+import com.example.pertemuan9.view.EditSiswaScreen
+import com.example.pertemuan9.view.route.DestinasiEditSiswa
 
 
 // Perbaikan 1: Hapus tanda @ yang dobel
@@ -39,12 +40,12 @@ fun HostNavigasi(
     NavHost(
         navController = navController,
         startDestination = DestinasiHome.route,
-        modifier = modifier // Perbaikan 3: Gunakan huruf kecil (parameter), JANGAN Modifier (object)
+        modifier = Modifier
     ) {
         composable(DestinasiHome.route) {
             HomeScreen(
                 navigateToItemEntry = { navController.navigate(DestinasiEntry.route) },
-                navigateToItemUpdate = { // Perbaikan typo kecil: navigateToitemUpdate -> navigateToItemUpdate (camelCase)
+                navigateToItemUpdate = {
                     navController.navigate("${DestinasiDetailSiswa.route}/$it")
                 }
             )
@@ -54,15 +55,25 @@ fun HostNavigasi(
         }
         composable(
             route = DestinasiDetailSiswa.routeWithArgs,
-            arguments = listOf(
-                // Perbaikan 4: Pastikan referensi itemIdArg lengkap
-                navArgument(DestinasiDetailSiswa.itemIdArg) {
-                    type = NavType.IntType
-                }
-            )
+            arguments = listOf(navArgument(DestinasiDetailSiswa.itemIdArg) {
+                type = NavType.IntType
+            })
         ) {
             DetailSiswaScreen(
+                // Pastikan baris ini ada!
+                navigateToEditItem = { navController.navigate("${DestinasiEditSiswa.route}/$it") },
                 navigateBack = { navController.navigateUp() }
+            )
+        }
+        composable(
+            route = DestinasiEditSiswa.routeWithArgs,
+            arguments = listOf(navArgument(DestinasiEditSiswa.itemIdArg) {
+                type = NavType.IntType
+            })
+        ) {
+            EditSiswaScreen(
+                navigateBack = { navController.popBackStack() },
+                onNavigateUp = { navController.navigateUp() }
             )
         }
     }
